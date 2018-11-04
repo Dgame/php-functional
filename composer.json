@@ -1,0 +1,40 @@
+{
+    "name": "dgame/php-functional",
+    "description": "php functional",
+    "license": "MIT",
+    "type": "library",
+    "homepage": "https://github.com/php-functional",
+    "authors": [
+        {
+            "name": "Randy Schütt",
+            "email": "rswhite4@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "dgame/php-ensurance": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ],
+        "files": [
+            "src/ADT/functions.php"
+        ],
+        "psr-4": {
+            "Dgame\\Functional\\": "src/",
+            "Dgame\\Functional\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ],
+        "coverage": [
+            "phpunit --coverage-clover=coverage"
+        ]
+    }
+}
