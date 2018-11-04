@@ -24,11 +24,11 @@ final class LetBinding
     }
 
     /**
-     * @param mixed ...$closures
+     * @param callable ...$closures
      *
      * @return bool
      */
-    public function be(...$closures): bool
+    public function be(callable ...$closures): bool
     {
         $params = $this->adt->destruct();
         if (count($params) !== count($closures)) {
