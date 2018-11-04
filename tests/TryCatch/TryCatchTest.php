@@ -4,7 +4,6 @@ namespace Dgame\Functional\Test\TryCatch;
 
 use Dgame\Functional\Option\None;
 use Dgame\Functional\Option\Some;
-use Dgame\Functional\Result\Err;
 use Dgame\Functional\Result\Ok;
 use Dgame\Functional\TryCatch\TryCatch;
 use Exception;
@@ -36,7 +35,7 @@ final class TryCatchTest extends TestCase
         $this->assertEquals(23, $value);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -52,7 +51,7 @@ final class TryCatchTest extends TestCase
         $try->get();
     }
 
-    public function testGetOr()
+    public function testGetOr(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -66,7 +65,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testGetOrElse()
+    public function testGetOrElse(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -84,7 +83,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testGetOrThrow()
+    public function testGetOrThrow(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -100,7 +99,7 @@ final class TryCatchTest extends TestCase
         $try->getOrThrow('No!');
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -127,7 +126,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -148,7 +147,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testToOption()
+    public function testToOption(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -161,7 +160,7 @@ final class TryCatchTest extends TestCase
         $this->assertEquals(new None(), $try->toOption());
     }
 
-    public function testToResult()
+    public function testToResult(): void
     {
         $try = new TryCatch(function () {
             return 42;
