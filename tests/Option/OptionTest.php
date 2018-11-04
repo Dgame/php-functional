@@ -15,7 +15,7 @@ use function Dgame\Functional\ADT\let;
 
 final class OptionTest extends TestCase
 {
-    public function testIsSomeIsNone()
+    public function testIsSomeIsNone(): void
     {
         $opt = new Some(42);
         $this->assertTrue($opt->isSome());
@@ -26,7 +26,7 @@ final class OptionTest extends TestCase
         $this->assertTrue($opt->isNone());
     }
 
-    public function testLetBinding()
+    public function testLetBinding(): void
     {
         $opt = new Some(42);
         $this->assertTrue(let($opt)->be(int($a)));
@@ -40,7 +40,7 @@ final class OptionTest extends TestCase
         $this->assertNull($b);
     }
 
-    public function testExpect()
+    public function testExpect(): void
     {
         $x = new Some('value');
         $this->assertEquals('value', $x->expect('the world is ending'));
@@ -52,7 +52,7 @@ final class OptionTest extends TestCase
         $y->expect('the world is ending');
     }
 
-    public function testUnwrap()
+    public function testUnwrap(): void
     {
         $x = new Some('air');
         $this->assertEquals('air', $x->unwrap());
@@ -63,7 +63,7 @@ final class OptionTest extends TestCase
         $y->unwrap();
     }
 
-    public function testUnwrapOr()
+    public function testUnwrapOr(): void
     {
         $x = new Some('car');
         $this->assertEquals('car', $x->unwrapOr('bike'));
@@ -72,7 +72,7 @@ final class OptionTest extends TestCase
         $this->assertEquals('bike', $y->unwrapOr('bike'));
     }
 
-    public function testUnwrapOrElse()
+    public function testUnwrapOrElse(): void
     {
         $k = 10;
         $x = new Some(4);
@@ -86,7 +86,7 @@ final class OptionTest extends TestCase
         }));
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $x = new Some('Hello World');
         $y = $x->map(function (string $s) {
@@ -96,7 +96,7 @@ final class OptionTest extends TestCase
         $this->assertEquals(11, $y->unwrap());
     }
 
-    public function testMapOr()
+    public function testMapOr(): void
     {
         $x = new Some('foo');
         $this->assertEquals(3, $x->mapOr(function (string $s) {
@@ -109,7 +109,7 @@ final class OptionTest extends TestCase
         }, 42));
     }
 
-    public function testMaprOrElse()
+    public function testMaprOrElse(): void
     {
         $k = 21;
         $x = new Some('foo');
@@ -127,7 +127,7 @@ final class OptionTest extends TestCase
         }));
     }
 
-    public function testOkOr()
+    public function testOkOr(): void
     {
         $x = new Some('foo');
         $this->assertEquals(new Ok('foo'), $x->okOr(0));
@@ -136,7 +136,7 @@ final class OptionTest extends TestCase
         $this->assertEquals(new Err(0), $y->okOr(0));
     }
 
-    public function testOkOrElse()
+    public function testOkOrElse(): void
     {
         $x = new Some('foo');
         $this->assertEquals(new Ok('foo'), $x->okOrElse(function () {
@@ -149,7 +149,7 @@ final class OptionTest extends TestCase
         }));
     }
 
-    public function testAnd()
+    public function testAnd(): void
     {
         $x = new Some(2);
         $y = new None();
@@ -173,7 +173,7 @@ final class OptionTest extends TestCase
         $this->assertTrue($y->and($x)->isNone());
     }
 
-    public function testAndThen()
+    public function testAndThen(): void
     {
         $sq = function (int $x): Option {
             return new Some($x * $x);
@@ -193,7 +193,7 @@ final class OptionTest extends TestCase
         $this->assertEquals(new None(), $y->andThen($sq)->andThen($sq));
     }
 
-    public function testOr()
+    public function testOr(): void
     {
         $x = new Some(2);
         $y = new None();
@@ -216,7 +216,7 @@ final class OptionTest extends TestCase
         $this->assertEquals(new None(), $x->or($y));
     }
 
-    public function testOrElse()
+    public function testOrElse(): void
     {
         $nobody  = function (): Option {
             return new None();
@@ -232,7 +232,7 @@ final class OptionTest extends TestCase
         $this->assertEquals($y, $y->orElse($nobody));
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $isEven = function (int $n): bool {
             return $n % 2 === 0;
@@ -246,30 +246,30 @@ final class OptionTest extends TestCase
         $this->assertTrue($c->filter($isEven)->isSome());
     }
 
-    public function testSwitch()
+    public function testSwitch(): void
     {
         $switches = 0;
 
         $opt = new Some(23);
-        $opt->matchFirst([Some::matches('*') => function (int $value) use (&$switches) {
+        $opt->matchFirst([Some::matches('*') => function (int $value) use (&$switches): void {
             $switches++;
             $this->assertEquals(23, $value);
         }]);
-        $opt->matchFirst([Some::matches() => function () use (&$switches) {
+        $opt->matchFirst([Some::matches() => function () use (&$switches): void {
             $switches++;
         }]);
-        $opt->matchFirst([Some::matches(_) => function () use (&$switches) {
+        $opt->matchFirst([Some::matches(_) => function () use (&$switches): void {
             $switches++;
         }]);
         $opt->matchFirst(
             [
-                None::matches()              => function () {
+                None::matches()              => function (): void {
                     $this->fail('Not None!');
                 },
-                Some::matches(float($value)) => function (float $_) {
+                Some::matches(float($value)) => function (float $_): void {
                     $this->fail('Not a float!');
                 },
-                Some::matches(int($value))   => function (int $value) use (&$switches) {
+                Some::matches(int($value))   => function (int $value) use (&$switches): void {
                     $switches++;
                     $this->assertEquals(23, $value);
                 }
@@ -279,25 +279,25 @@ final class OptionTest extends TestCase
         $this->assertEquals(4, $switches);
 
         $opt = new None();
-        $opt->matchFirst([Some::matches() => function ($_) {
+        $opt->matchFirst([Some::matches() => function ($_): void {
             $this->fail('Not Some');
         }]);
-        $opt->matchFirst([Some::matches(_) => function () {
+        $opt->matchFirst([Some::matches(_) => function (): void {
             $this->fail('Not Some');
         }]);
         $opt->matchFirst(
             [
-                Some::matches(_) => function () {
+                Some::matches(_) => function (): void {
                     $this->fail('Not Some');
                 },
-                None::matches()  => function () use (&$switches) {
+                None::matches()  => function () use (&$switches): void {
                     $switches++;
                 }
             ]
         );
         $opt->matchFirst(
             [
-                None::matches(_) => function () use (&$switches) {
+                None::matches(_) => function () use (&$switches): void {
                     $switches++;
                 }
             ]

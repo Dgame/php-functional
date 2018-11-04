@@ -17,7 +17,7 @@ use function Dgame\Functional\ADT\let;
  */
 final class ResultTest extends TestCase
 {
-    public function testIsOkIsErr()
+    public function testIsOkIsErr(): void
     {
         $result = new Ok(42);
         $this->assertTrue($result->isOk());
@@ -28,7 +28,7 @@ final class ResultTest extends TestCase
         $this->assertTrue($result->isErr());
     }
 
-    public function testLetBinding()
+    public function testLetBinding(): void
     {
         $result = new Ok(42);
         $this->assertTrue(let($result)->be(int($a)));
@@ -42,7 +42,7 @@ final class ResultTest extends TestCase
         $this->assertNull($b);
     }
 
-    public function testExpect()
+    public function testExpect(): void
     {
         $x = new Ok('value');
         $this->assertEquals('value', $x->expect('the world is ending'));
@@ -54,7 +54,7 @@ final class ResultTest extends TestCase
         $y->expect('the world is ending: No!');
     }
 
-    public function testUnwrap()
+    public function testUnwrap(): void
     {
         $x = new Ok('air');
         $this->assertEquals('air', $x->unwrap());
@@ -65,7 +65,7 @@ final class ResultTest extends TestCase
         $y->unwrap();
     }
 
-    public function testUnwrapOr()
+    public function testUnwrapOr(): void
     {
         $x = new Ok('car');
         $this->assertEquals('car', $x->unwrapOr('bike'));
@@ -74,7 +74,7 @@ final class ResultTest extends TestCase
         $this->assertEquals('bike', $y->unwrapOr('bike'));
     }
 
-    public function testUnwrapOrElse()
+    public function testUnwrapOrElse(): void
     {
         $k = 10;
         $x = new Ok(4);
@@ -88,7 +88,7 @@ final class ResultTest extends TestCase
         }));
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $x = new Ok('Hello World');
         $y = $x->map(function (string $s) {
@@ -98,7 +98,7 @@ final class ResultTest extends TestCase
         $this->assertEquals(11, $y->unwrap());
     }
 
-    public function testMapOr()
+    public function testMapOr(): void
     {
         $x = new Ok('foo');
         $this->assertEquals(3, $x->mapOr(function (string $s) {
@@ -111,7 +111,7 @@ final class ResultTest extends TestCase
         }, 42));
     }
 
-    public function testMaprOrElse()
+    public function testMaprOrElse(): void
     {
         $k = 21;
         $x = new Ok('foo');
@@ -129,7 +129,7 @@ final class ResultTest extends TestCase
         }));
     }
 
-    public function testAnd()
+    public function testAnd(): void
     {
         $x = new Ok(2);
         $y = new Err('No!');
@@ -153,7 +153,7 @@ final class ResultTest extends TestCase
         $this->assertTrue($y->and($x)->isErr());
     }
 
-    public function testAndThen()
+    public function testAndThen(): void
     {
         $sq = function (int $x): Result {
             return new Ok($x * $x);
@@ -173,7 +173,7 @@ final class ResultTest extends TestCase
         $this->assertEquals(new Err('No!'), $y->andThen($sq)->andThen($sq));
     }
 
-    public function testOr()
+    public function testOr(): void
     {
         $x = new Ok(2);
         $y = new Err('No!');
@@ -196,7 +196,7 @@ final class ResultTest extends TestCase
         $this->assertEquals(new Err('No!'), $x->or($y));
     }
 
-    public function testOrElse()
+    public function testOrElse(): void
     {
         $nobody  = function (): Result {
             return new Err('No!');
@@ -212,30 +212,30 @@ final class ResultTest extends TestCase
         $this->assertEquals($y, $y->orElse($nobody));
     }
 
-    public function testSwitch()
+    public function testSwitch(): void
     {
         $switches = 0;
 
         $result = new Ok(23);
-        $result->matchFirst([Ok::matches('*') => function (int $value) use (&$switches) {
+        $result->matchFirst([Ok::matches('*') => function (int $value) use (&$switches): void {
             $switches++;
             $this->assertEquals(23, $value);
         }]);
-        $result->matchFirst([Ok::matches() => function () use (&$switches) {
+        $result->matchFirst([Ok::matches() => function () use (&$switches): void {
             $switches++;
         }]);
-        $result->matchFirst([Ok::matches(_) => function () use (&$switches) {
+        $result->matchFirst([Ok::matches(_) => function () use (&$switches): void {
             $switches++;
         }]);
         $result->matchFirst(
             [
-                Err::matches()              => function () {
+                Err::matches()              => function (): void {
                     $this->fail('Not Err!');
                 },
-                Err::matches(float($value)) => function (float $_) {
+                Err::matches(float($value)) => function (float $_): void {
                     $this->fail('Not a float!');
                 },
-                Ok::matches(int($value))    => function (int $value) use (&$switches) {
+                Ok::matches(int($value))    => function (int $value) use (&$switches): void {
                     $switches++;
                     $this->assertEquals(23, $value);
                 }
@@ -245,25 +245,25 @@ final class ResultTest extends TestCase
         $this->assertEquals(4, $switches);
 
         $result = new Err('No!');
-        $result->matchFirst([Ok::matches() => function ($_) {
+        $result->matchFirst([Ok::matches() => function ($_): void {
             $this->fail('Not Ok');
         }]);
-        $result->matchFirst([Ok::matches(_) => function () {
+        $result->matchFirst([Ok::matches(_) => function (): void {
             $this->fail('Not Ok');
         }]);
         $result->matchFirst(
             [
-                Ok::matches(_) => function () {
+                Ok::matches(_) => function (): void {
                     $this->fail('Not Ok');
                 },
-                Err::matches() => function () use (&$switches) {
+                Err::matches() => function () use (&$switches): void {
                     $switches++;
                 }
             ]
         );
         $result->matchFirst(
             [
-                Err::matches(_) => function () use (&$switches) {
+                Err::matches(_) => function () use (&$switches): void {
                     $switches++;
                 }
             ]

@@ -2,10 +2,10 @@
 
 namespace Dgame\Functional\Result;
 
+use Dgame\Functional\ADT\ADTMapInterface;
 use Dgame\Functional\ADT\BinaryADTInterface;
 use Dgame\Functional\ADT\BinaryADTMapTrait;
 use Dgame\Functional\ADT\BinaryADTTrait;
-use Dgame\Functional\ADT\ADTMapInterface;
 
 /**
  * Class Result

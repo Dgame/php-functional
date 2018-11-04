@@ -33,7 +33,7 @@ trait DefaultUnwrapTrait
     /**
      * @param string $message
      */
-    public function expect(string $message)
+    public function expect(string $message): void
     {
         throw new AssertionError($message);
     }

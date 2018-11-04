@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TryCatchTest extends TestCase
 {
-    public function testIsSuccess()
+    public function testIsSuccess(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -18,9 +18,9 @@ final class TryCatchTest extends TestCase
         $this->assertEquals(42, $value);
     }
 
-    public function testIsFailed()
+    public function testIsFailed(): void
     {
-        $try = new TryCatch(function () {
+        $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
         });
 

@@ -15,7 +15,7 @@ final class None extends Option
     /**
      * @return void
      */
-    public function unwrap()
+    public function unwrap(): void
     {
         $this->expect('Unwraped None');
     }

@@ -2,12 +2,12 @@
 
 namespace Dgame\Functional\Option;
 
+use Dgame\Functional\ADT\ADTFilterInterface;
+use Dgame\Functional\ADT\ADTMapInterface;
 use Dgame\Functional\ADT\BinaryADTFilterTrait;
 use Dgame\Functional\ADT\BinaryADTInterface;
 use Dgame\Functional\ADT\BinaryADTMapTrait;
 use Dgame\Functional\ADT\BinaryADTTrait;
-use Dgame\Functional\ADT\ADTFilterInterface;
-use Dgame\Functional\ADT\ADTMapInterface;
 use Dgame\Functional\Result\Err;
 use Dgame\Functional\Result\Ok;
 use Dgame\Functional\Result\Result;

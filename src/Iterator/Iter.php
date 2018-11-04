@@ -117,7 +117,7 @@ final class Iter
      *
      * @return Iter
      */
-    public static function stride(Iter $it, int $count): self
+    public static function stride(self $it, int $count): self
     {
         return self::with(function () use ($it, $count) {
             $gen = $it->consume();
@@ -134,7 +134,7 @@ final class Iter
      *
      * @return Iter
      */
-    public static function cycle(Iter $it): self
+    public static function cycle(self $it): self
     {
         return self::with(function () use ($it) {
             while (true) {
@@ -381,7 +381,7 @@ final class Iter
      *
      * @return Iter
      */
-    function chain(Iter ...$tails): self
+    public function chain(self ...$tails): self
     {
         return self::with(function () use ($tails) {
             $gen = $this->consume();
@@ -408,7 +408,7 @@ final class Iter
      *
      * @return Iter
      */
-    function zip(Iter ...$tails): self
+    public function zip(self ...$tails): self
     {
         return self::with(function () use ($tails) {
             /** @var Generator $gent1 */

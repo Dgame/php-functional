@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class IteratorTest extends TestCase
 {
-    public function testNext()
+    public function testNext(): void
     {
         $it = Iter::chars('Hallo');
         $this->assertEquals('H', $it->next()->unwrap());
@@ -29,7 +29,7 @@ final class IteratorTest extends TestCase
         $this->assertEmpty($it->collect());
     }
 
-    public function testChars()
+    public function testChars(): void
     {
         $it = Iter::chars('Hallo');
         $this->assertEquals('H', $it->next()->unwrap());
@@ -40,7 +40,7 @@ final class IteratorTest extends TestCase
         $this->assertEmpty($it->implode());
     }
 
-    public function testRange()
+    public function testRange(): void
     {
         $it = Iter::range('a', 'z');
         $this->assertEquals('a', $it->next()->unwrap());
@@ -50,35 +50,35 @@ final class IteratorTest extends TestCase
         $this->assertEquals('defghijkl', $it->take(9)->implode());
     }
 
-    public function testIota()
+    public function testIota(): void
     {
         $this->assertEquals([0, 1, 2, 3, 4, 5, 6], Iter::iota(0, 100)->take(7)->collect());
         $this->assertEquals([0, 2, 4, 6, 8, 10, 12], Iter::iota(0, 100, 2)->take(7)->collect());
     }
 
-    public function testStride()
+    public function testStride(): void
     {
         $this->assertEquals([1, 4, 7, 10], Iter::stride(Iter::iota(1, 11), 3)->collect());
     }
 
-    public function testCylce()
+    public function testCylce(): void
     {
         $this->assertEquals([1, 2, 1, 2, 1], Iter::cycle(Iter::iota(1, 2))->take(5)->collect());
     }
 
-    public function testRepeat()
+    public function testRepeat(): void
     {
         $this->assertEquals([42, 42, 42, 42], Iter::repeat(42)->take(4)->collect());
         $this->assertEquals([42, 42, 42, 42, 42, 42, 42, 42], Iter::repeat(42, 18)->take(8)->collect());
         $this->assertEquals([42, 42, 42, 42, 42, 42, 42], Iter::repeat(42, 7)->take(8)->collect());
     }
 
-    public function testChunks()
+    public function testChunks(): void
     {
         $this->assertEquals([[1, 2, 3, 4], [5, 6, 7, 8], [9]], Iter::chunks([1, 2, 3, 4, 5, 6, 7, 8, 9], 4)->collect());
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $it = Iter::of([1, 2, 3, 4])->map(function (int $i) {
             return $i * 2;
@@ -86,7 +86,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals([2, 4, 6, 8], $it->collect());
     }
 
-    public function testSum()
+    public function testSum(): void
     {
         $it = Iter::of([1, 2, 3, 4]);
         $this->assertEquals(10, $it->clone()->sum());
@@ -98,7 +98,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(0, $it->clone()->sum());
     }
 
-    public function testAny()
+    public function testAny(): void
     {
         $it = Iter::of([1, 3, 5, 7, 9]);
         $this->assertFalse($it->any(function (int $i): bool {
@@ -116,7 +116,7 @@ final class IteratorTest extends TestCase
         }));
     }
 
-    public function testAnyCollect()
+    public function testAnyCollect(): void
     {
         $it = Iter::iota(0, 50)->take(25);
         $this->assertTrue($it->any(function (int $i): bool {
@@ -125,7 +125,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(range(11, 24), $it->collect());
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $it = Iter::of([1, 3, 5, 7, 9]);
         $this->assertFalse($it->all(function (int $i): bool {
@@ -137,7 +137,7 @@ final class IteratorTest extends TestCase
         }));
     }
 
-    public function testAllCollect()
+    public function testAllCollect(): void
     {
         $it = Iter::iota(0, 50)->take(25);
         $this->assertFalse($it->all(function (int $i): bool {
@@ -152,7 +152,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(range(15, 24), $it->collect());
     }
 
-    public function testSkipTake()
+    public function testSkipTake(): void
     {
         $it = Iter::iota(0, 50)->skip(15)->take(15);
         $this->assertEquals(range(15, 15 + 15 - 1), $it->collect());
@@ -161,7 +161,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(range(5, 14), $it->collect());
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $it = Iter::iota(0, 10)->filter(function (int $i): bool {
             return $i % 2 === 0;
@@ -169,7 +169,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals([0, 2, 4, 6, 8, 10], $it->collect());
     }
 
-    public function testTakeWhile()
+    public function testTakeWhile(): void
     {
         $belowTen = function (int $item) {
             return $item < 10;
@@ -177,7 +177,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals([0, 1, 2], Iter::of([0, 1, 2, 10, 20])->takeWhile($belowTen)->collect());
     }
 
-    public function testTakeUntil()
+    public function testTakeUntil(): void
     {
         $belowTen = function (int $item) {
             return $item >= 10;
@@ -185,7 +185,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals([0, 1, 2], Iter::of([0, 1, 2, 10, 20])->takeUntil($belowTen)->collect());
     }
 
-    public function testSkipWhile()
+    public function testSkipWhile(): void
     {
         $belowTen = function (int $item) {
             return $item < 10;
@@ -193,7 +193,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals([10, 20], Iter::of([0, 1, 2, 10, 20])->skipWhile($belowTen)->collect());
     }
 
-    public function testSkipUntil()
+    public function testSkipUntil(): void
     {
         $belowTen = function (int $item) {
             return $item >= 10;
