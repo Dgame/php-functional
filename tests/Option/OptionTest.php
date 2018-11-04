@@ -33,6 +33,8 @@ final class OptionTest extends TestCase
         $this->assertTrue(is_int($a));
         $this->assertEquals(42, $a);
 
+        $this->assertTrue(let($opt)->be(42));
+
         $opt = new None();
         $this->assertFalse(let($opt)->be(int($b)));
         $this->assertNull($b);

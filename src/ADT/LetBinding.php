@@ -24,23 +24,30 @@ final class LetBinding
     }
 
     /**
-     * @param callable ...$closures
+     * @param mixed ...$predicates
      *
      * @return bool
      */
-    public function be(callable ...$closures): bool
+    public function be(...$predicates): bool
     {
         $params = $this->adt->destruct();
-        if (count($params) !== count($closures)) {
+        if (count($params) !== count($predicates)) {
             return false;
         }
 
-        foreach ($closures as $index => $closure) {
-            if (array_key_exists($index, $params) && is_callable($closure)) {
-                $param = $params[$index];
-                if (!$closure($param)) {
+        foreach ($predicates as $index => $predicate) {
+            $param = $params[$index];
+
+            if (is_callable($predicate)) {
+                if (!$predicate($param)) {
                     return false;
                 }
+
+                continue;
+            }
+
+            if ($predicate != $param) {
+                return false;
             }
         }
 

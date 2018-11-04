@@ -35,6 +35,8 @@ final class ResultTest extends TestCase
         $this->assertTrue(is_int($a));
         $this->assertEquals(42, $a);
 
+        $this->assertTrue(let($result)->be(42));
+
         $result = new Err('No!');
         $this->assertFalse(let($result)->be(int($b)));
         $this->assertNull($b);
@@ -233,7 +235,7 @@ final class ResultTest extends TestCase
                 Err::matches(float($value)) => function (float $_) {
                     $this->fail('Not a float!');
                 },
-                Ok::matches(int($value))   => function (int $value) use (&$switches) {
+                Ok::matches(int($value))    => function (int $value) use (&$switches) {
                     $switches++;
                     $this->assertEquals(23, $value);
                 }
