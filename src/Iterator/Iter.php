@@ -552,9 +552,7 @@ final class Iter
      */
     private function gen(): Generator
     {
-        $it = $this->closure;
-
-        return $it();
+        return ($this->closure)();
     }
 
     /**
