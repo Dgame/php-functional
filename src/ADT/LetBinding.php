@@ -46,7 +46,7 @@ final class LetBinding
                 continue;
             }
 
-            if ($predicate != $param) {
+            if ($predicate !== $param) {
                 return false;
             }
         }
