@@ -84,14 +84,10 @@ final class TryCatch implements TryCatchInterface
     }
 
     /**
-     * @param null $value
-     *
      * @return bool
      */
-    public function isSuccess(&$value = null): bool
+    public function isSuccess(): bool
     {
-        $value = $this->value;
-
         return !$this->isFailed();
     }
 
@@ -107,7 +103,7 @@ final class TryCatch implements TryCatchInterface
      * @return mixed
      * @throws Throwable
      */
-    public function get()
+    public function unwrap()
     {
         $this->throw();
 
@@ -119,9 +115,9 @@ final class TryCatch implements TryCatchInterface
      *
      * @return mixed
      */
-    public function getOr($default)
+    public function unwrapOr($default)
     {
-        return $this->isSuccess($value) ? $value : $default;
+        return $this->isSuccess() ? $this->value : $default;
     }
 
     /**
@@ -129,9 +125,9 @@ final class TryCatch implements TryCatchInterface
      *
      * @return mixed
      */
-    public function getOrElse(callable $closure)
+    public function unwrapOrElse(callable $closure)
     {
-        return $this->isSuccess($value) ? $value : $closure();
+        return $this->isSuccess() ? $this->value : $closure();
     }
 
     /**
@@ -140,13 +136,13 @@ final class TryCatch implements TryCatchInterface
      * @return mixed
      * @throws Throwable
      */
-    public function getOrThrow(string $message = null)
+    public function unwrapOrThrow(string $message = null)
     {
         if (!empty($message)) {
             $this->throwWith($message);
         }
 
-        return $this->get();
+        return $this->unwrap();
     }
 
     /**
@@ -156,7 +152,7 @@ final class TryCatch implements TryCatchInterface
      */
     public function filter(callable $predicate): TryCatchInterface
     {
-        if ($this->isSuccess($value) && !$predicate($value)) {
+        if ($this->isSuccess() && !$predicate($this->value)) {
             $this->throwable = new AssertionError('Predicate does not match');
         }
 
@@ -170,8 +166,8 @@ final class TryCatch implements TryCatchInterface
      */
     public function map(callable $closure): TryCatchInterface
     {
-        if ($this->isSuccess($value)) {
-            return new self($closure, $value);
+        if ($this->isSuccess()) {
+            return new self($closure, $this->value);
         }
 
         return $this;
@@ -201,8 +197,8 @@ final class TryCatch implements TryCatchInterface
     {
         $this->ignoreFailure();
 
-        if ($this->isSuccess($value)) {
-            return new Ok($value);
+        if ($this->isSuccess()) {
+            return new Ok($this->value);
         }
 
         return new Err($this->throwable);
@@ -215,8 +211,8 @@ final class TryCatch implements TryCatchInterface
     {
         $this->ignoreFailure();
 
-        if ($this->isSuccess($value)) {
-            return new Some($value);
+        if ($this->isSuccess()) {
+            return new Some($this->value);
         }
 
         return new None();

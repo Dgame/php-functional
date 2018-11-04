@@ -4,7 +4,6 @@ namespace Dgame\Functional\Test\TryCatch;
 
 use Dgame\Functional\Option\None;
 use Dgame\Functional\Option\Some;
-use Dgame\Functional\Result\Err;
 use Dgame\Functional\Result\Ok;
 use Dgame\Functional\TryCatch\TryCatch;
 use Exception;
@@ -18,8 +17,8 @@ final class TryCatchTest extends TestCase
             return 42;
         });
 
-        $this->assertTrue($try->isSuccess($value));
-        $this->assertEquals(42, $value);
+        $this->assertTrue($try->isSuccess());
+        $this->assertEquals(42, $try->unwrap());
     }
 
     public function testIsFailed(): void
@@ -32,8 +31,8 @@ final class TryCatchTest extends TestCase
         $try = $try->recoverWith(function (Exception $e) {
             return $e->getMessage() === 'What is this madness?' ? 23 : $e;
         });
-        $this->assertTrue($try->isSuccess($value));
-        $this->assertEquals(23, $value);
+        $this->assertTrue($try->isSuccess());
+        $this->assertEquals(23, $try->unwrap());
     }
 
     public function testGet()
@@ -41,7 +40,7 @@ final class TryCatchTest extends TestCase
         $try = new TryCatch(function () {
             return 42;
         });
-        $this->assertEquals(42, $try->get());
+        $this->assertEquals(42, $try->unwrap());
 
         $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
@@ -49,7 +48,7 @@ final class TryCatchTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('What is this madness?');
-        $try->get();
+        $try->unwrap();
     }
 
     public function testGetOr()
@@ -57,12 +56,12 @@ final class TryCatchTest extends TestCase
         $try = new TryCatch(function () {
             return 42;
         });
-        $this->assertEquals(42, $try->getOr(23));
+        $this->assertEquals(42, $try->unwrapOr(23));
 
         $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
         });
-        $this->assertEquals(23, $try->getOr(23));
+        $this->assertEquals(23, $try->unwrapOr(23));
         $try->ignoreFailure();
     }
 
@@ -71,14 +70,14 @@ final class TryCatchTest extends TestCase
         $try = new TryCatch(function () {
             return 42;
         });
-        $this->assertEquals(42, $try->getOrElse(function () {
+        $this->assertEquals(42, $try->unwrapOrElse(function () {
             return 23;
         }));
 
         $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
         });
-        $this->assertEquals(23, $try->getOrElse(function () {
+        $this->assertEquals(23, $try->unwrapOrElse(function () {
             return 23;
         }));
         $try->ignoreFailure();
@@ -89,7 +88,7 @@ final class TryCatchTest extends TestCase
         $try = new TryCatch(function () {
             return 42;
         });
-        $this->assertEquals(42, $try->getOrThrow('Not 42?!'));
+        $this->assertEquals(42, $try->unwrapOrThrow('Not 42?!'));
 
         $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
@@ -97,7 +96,7 @@ final class TryCatchTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('What is this madness?');
-        $try->getOrThrow('No!');
+        $try->unwrapOrThrow('No!');
     }
 
     public function testFilter()
@@ -109,7 +108,7 @@ final class TryCatchTest extends TestCase
             return $n === 42;
         });
         $this->assertTrue($try->isSuccess());
-        $this->assertEquals(42, $try->get());
+        $this->assertEquals(42, $try->unwrap());
 
         $try = $try->filter(function (int $n) {
             return $n > 42;
@@ -136,7 +135,7 @@ final class TryCatchTest extends TestCase
             return $n / 2 + 2;
         });
         $this->assertTrue($try->isSuccess());
-        $this->assertEquals(23, $try->get());
+        $this->assertEquals(23, $try->unwrap());
 
         $try = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
@@ -168,7 +167,7 @@ final class TryCatchTest extends TestCase
         });
         $this->assertEquals(new Ok(42), $try->toResult());
 
-        $try = new TryCatch(function (): void {
+        $try    = new TryCatch(function (): void {
             throw new Exception('What is this madness?');
         });
         $result = $try->toResult();

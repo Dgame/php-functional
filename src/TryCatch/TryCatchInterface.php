@@ -12,11 +12,9 @@ use Dgame\Functional\Result\Result;
 interface TryCatchInterface
 {
     /**
-     * @param mixed|null $value
-     *
      * @return bool
      */
-    public function isSuccess(&$value = null): bool;
+    public function isSuccess(): bool;
 
     /**
      * @return bool
@@ -31,28 +29,28 @@ interface TryCatchInterface
     /**
      * @return mixed
      */
-    public function get();
+    public function unwrap();
 
     /**
      * @param mixed $default
      *
      * @return mixed
      */
-    public function getOr($default);
+    public function unwrapOr($default);
 
     /**
      * @param callable $closure
      *
      * @return mixed
      */
-    public function getOrElse(callable $closure);
+    public function unwrapOrElse(callable $closure);
 
     /**
      * @param string|null $message
      *
      * @return mixed
      */
-    public function getOrThrow(string $message = null);
+    public function unwrapOrThrow(string $message = null);
 
     /**
      * @param callable $predicate
