@@ -35,7 +35,7 @@ final class TryCatchTest extends TestCase
         $this->assertEquals(23, $try->unwrap());
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -51,7 +51,7 @@ final class TryCatchTest extends TestCase
         $try->unwrap();
     }
 
-    public function testGetOr()
+    public function testGetOr(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -65,7 +65,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testGetOrElse()
+    public function testGetOrElse(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -83,7 +83,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testGetOrThrow()
+    public function testGetOrThrow(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -99,7 +99,7 @@ final class TryCatchTest extends TestCase
         $try->unwrapOrThrow('No!');
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -126,7 +126,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -147,7 +147,7 @@ final class TryCatchTest extends TestCase
         $try->ignoreFailure();
     }
 
-    public function testToOption()
+    public function testToOption(): void
     {
         $try = new TryCatch(function () {
             return 42;
@@ -160,7 +160,7 @@ final class TryCatchTest extends TestCase
         $this->assertEquals(new None(), $try->toOption());
     }
 
-    public function testToResult()
+    public function testToResult(): void
     {
         $try = new TryCatch(function () {
             return 42;
