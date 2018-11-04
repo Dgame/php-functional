@@ -46,6 +46,6 @@ final class Err extends Result
      */
     public function expect(string $message)
     {
-        throw new AssertionError($message . ': ' . $this->values[0]);
+        throw new AssertionError($message . ': ' . reset($this->values));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Dgame\Functional\Result;
 
+use AssertionError;
 use Dgame\Functional\ADT\ADTMapInterface;
 use Dgame\Functional\ADT\BinaryADTInterface;
 use Dgame\Functional\ADT\BinaryADTMapTrait;
@@ -20,6 +21,32 @@ abstract class Result implements BinaryADTInterface, ADTMapInterface
      * @return bool
      */
     abstract public function isOk(): bool;
+
+    /**
+     * @return mixed
+     */
+    public function unwrapErr()
+    {
+        if ($this->isOk()) {
+            throw new AssertionError($this->unwrap());
+        }
+
+        return reset($this->values);
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return mixed
+     */
+    public function expectErr(string $message)
+    {
+        if ($this->isOk()) {
+            throw new AssertionError($message . ': ' . $this->unwrap());
+        }
+
+        return reset($this->values);
+    }
 
     /**
      * @param callable $closure

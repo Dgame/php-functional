@@ -212,6 +212,28 @@ final class ResultTest extends TestCase
         $this->assertEquals($y, $y->orElse($nobody));
     }
 
+    public function testUnwrapErr(): void
+    {
+        $a = new Ok(42);
+        $this->expectException(AssertionError::class);
+        $this->expectExceptionMessage('42');
+        $a->unwrapErr();
+
+        $b = new Err('Fail');
+        $this->assertEquals('Fail', $b->unwrapErr());
+    }
+
+    public function testExpectErr(): void
+    {
+        $a = new Ok(42);
+        $this->expectException(AssertionError::class);
+        $this->expectExceptionMessage('Unexpected: 42');
+        $a->expectErr('Unexpected');
+
+        $b = new Err('Fail');
+        $this->assertEquals('Fail', $b->expectErr('Expected'));
+    }
+
     public function testSwitch(): void
     {
         $switches = 0;
